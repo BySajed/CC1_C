@@ -5,4 +5,5 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(CC1 src/main.c
         src/select.c
-        src/insert.c)
+        src/insert.c
+)

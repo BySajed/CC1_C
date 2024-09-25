@@ -5,5 +5,4 @@
 
 void select() {
     printf("Fonction de sélection\n");
-    // Ici, vous pouvez ajouter le code pour sélectionner des données de votre base de données
 }

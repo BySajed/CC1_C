@@ -11,35 +11,53 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "insert.h"
-#include "select.h"
+#include <string.h>
 
-typedef struct table{
+void insert();
+void select();
+
+typedef struct{
     int id;
     char nom[20];
     char prenom[20];
     int age;
-};
+}table;
 
 int menu(){
-    printf("Bienvenue dans votre base de donnée !\nVoici vos actions possibles:\n");
-    printf("1- Insert\n2- Select\n3- Quitter\n");
-    int choix;
-    scanf("%d", &choix);
-
-    return choix;
+    printf("Bienvenue dans votre base de donnée !\nQue souhaitez-vous faire ? :\n");
+    return 0;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    char userInput[100];
+    int choice;
 
-    int choix = menu();
-    while (choix != 3) {
-        if(choix == 1)
+    menu();
+    scanf("%s", userInput);
+
+    if(strcmp(userInput, "insert 1 from table") == 0) {
+        choice = 1;
+    }
+    else if(strcmp(userInput, "select * from table") == 0) {
+        choice = 2;
+    }
+    else {
+        printf("Veuillez entrer une commande valide\n");
+        return 1;
+    }
+
+    switch (choice) {
+        case 1:
+            printf("comparaison ok\n");
             insert();
-        else if(choix == 2)
+            break;
+        case 2:
+            printf("comparaison ok\n");
             select();
-
-        choix = menu();
+            break;
+        default:
+            printf("Veuillez entrer un choix valide\n");
+            break;
     }
 
     return 0;
