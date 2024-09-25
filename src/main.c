@@ -11,6 +11,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "insert.h"
+#include "select.h"
+
+typedef struct table{
+    int id;
+    char nom[20];
+    char prenom[20];
+    int age;
+};
 
 int menu(){
     printf("Bienvenue dans votre base de donnée !\nVoici vos actions possibles:\n");
@@ -21,10 +30,17 @@ int menu(){
     return choix;
 }
 
-
 int main() {
 
-    menu();
+    int choix = menu();
+    while (choix != 3) {
+        if(choix == 1)
+            insert();
+        else if(choix == 2)
+            select();
+
+        choix = menu();
+    }
 
     return 0;
 }

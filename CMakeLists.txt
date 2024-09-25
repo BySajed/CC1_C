@@ -3,4 +3,6 @@ project(CC1 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(CC1 src/main.c)
+add_executable(CC1 src/main.c
+        src/select.c
+        src/insert.c)
