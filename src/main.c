@@ -12,9 +12,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
-    printf("Hello, World!\n");
-    return 0;
+int menu(){
+    printf("Bienvenue dans votre base de donnée !\nVoici vos actions possibles:\n");
+    printf("1- Insert\n2- Select\n3- Quitter\n");
+    int choix;
+    scanf("%d", &choix);
+
+    return choix;
 }
 
 
+int main() {
+
+    menu();
+
+    return 0;
+}
