@@ -1,0 +1,39 @@
+# Fichiers objets
+*.o
+*.ko
+*.obj
+*.elf
+
+# Fichiers binaires
+*.bin
+*.exe
+*.kexe
+*.elf
+*.a
+*.so
+
+# Fichiers de sauvegarde de l'éditeur
+*~
+*.swp
+
+# Autres fichiers temporaires
+*.tmp
+*.log
+*.log.*
+*.tmp.*
+*.json
+*v*
+*build*
+temp/
+
+# Fichiers générés par CLion
+.idea/
+*.iml
+*.iws
+
+# Fichiers générés par les outils de construction
+Makefile
+*.mk
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
