@@ -42,11 +42,9 @@ int main(int argc, char* argv[]) {
 
     switch (choice) {
         case 1:
-            printf("comparaison ok\n");
             insert();
             break;
         case 2:
-            printf("comparaison ok\n");
             select();
             break;
         default:

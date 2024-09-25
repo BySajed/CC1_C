@@ -4,5 +4,5 @@
 #include <stdio.h>
 
 void select() {
-    printf("Fonction de sélection\n");
+    printf("Fonction de selection\n");
 }
