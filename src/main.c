@@ -1,14 +1,3 @@
-/*
- * CC 1 de C
- *
- * Objectif: Faire une base de donnée en incluant le principe d'arbre binaire
- * Permettre à l'utilisateur de fairedes insert et des select
- *
- * fait par BEN YOUSSEF Sajed 3SI2
- *
- * Début le 25/09/2024
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +22,12 @@ int main(int argc, char* argv[]) {
     int choice;
 
     menu();
-    scanf("%s", userInput);
+    fgets(userInput, sizeof(userInput), stdin);
+
+    // Remove the newline character at the end of the string, if it exists
+    if (userInput[strlen(userInput) - 1] == '\n') {
+        userInput[strlen(userInput) - 1] = '\0';
+    }
 
     if(strcmp(userInput, "insert 1 from table") == 0) {
         choice = 1;
