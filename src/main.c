@@ -17,7 +17,8 @@
 #include "structure.h"
 
 typedef struct table table;
-
+struct table *first = NULL;
+char userInput[100];
 void insert();
 void select();
 
@@ -34,22 +35,25 @@ char *getInput(char *input) {
     return input;
 }
 
-int main(int argc, char* argv[]) {
-    char userInput[100];
+int main() {
     int choice;
 
     //init table
-    struct table* first = (table *)malloc(sizeof(table));
-    struct table* second = (table *)malloc(sizeof(table));
-    struct table* third = (table *)malloc(sizeof(table));
+    first = (table *)malloc(sizeof(table));
+    if (first == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1; // Exit the program
+    }
 
     struct table *current = first;
     int id_node = 0;
 
     //auto increment id
     while (current != NULL) {
-        current->id = ++id_node;
-        current = current->next;
+        current->id = id_node+1;
+        if(current->next != NULL) {
+            current = current->next;
+        }
     }
 
     menu();

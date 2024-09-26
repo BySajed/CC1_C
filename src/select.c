@@ -5,7 +5,7 @@
 #include "main.h"
 #include "structure.h"
 
-extern struct table *first, *second, *third;
+extern struct table *first;
 
 void select() {
     struct table *current = first;
