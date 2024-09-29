@@ -50,20 +50,10 @@ int main() {
     menu();
 
     //init table
-    first = (table *)malloc(sizeof(table));
+    //first = (table *)malloc(sizeof(table));
     if (first == NULL) {
         printf("Memory allocation failed.\n");
         return 1;
-    }
-
-    struct table *current = first;
-    current->next = NULL;
-    int id_node = 0;
-
-    //auto increment id
-    while (current != NULL) {
-        current->id = id_node+1;
-	current = current->next;
     }
 
     char input[25];

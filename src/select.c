@@ -8,7 +8,7 @@
 extern struct table *first;
 
 void selection() {
-    struct table *current = first;
+/*    struct table *current = first;
 
     while (current != NULL) {
         printf("id: %d\n", current->id);
@@ -18,5 +18,6 @@ void selection() {
         printf("\n");
 
         current = current->next;
-    }
+    }*/
+    printf("la fonction de selection est en cours de developpement");
 }

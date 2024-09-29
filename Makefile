@@ -34,6 +34,10 @@ $(OBJ)delete.o : $(SRC)delete.c
 $(OBJ)update.o : $(SRC)update.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+$(OBJ)structure.o : $(SRC)structure.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+
 clean :
 	rm -rf $(OBJ)*.o
 	rm -rf $(EXE)

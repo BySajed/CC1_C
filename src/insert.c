@@ -8,7 +8,7 @@
 extern char userInput[100];
 
 
-void insert(Node** root, int data){
+void insertion(Node** root, int data){
     Node* newNode = createNode(data);
     if (*root == NULL) {
         *root = newNode;
