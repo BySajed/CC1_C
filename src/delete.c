@@ -3,6 +3,10 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include "structure.h"
 #include "delete.h"
 
 Node* getDeepestRightmostNode(Node* root){
@@ -64,14 +68,14 @@ void deleteDeepestRightmostNode(Node* root, Node* dNode){
     }
 }
 
-void deletion() {
+void deletion(Node** root, int data) {
 
     if (*root == NULL) {
-	printf("Database is empty")
+	printf("Database is empty");
 	return;
     }
 
-    if ((*root)->left == NULL && (*root)->right == NULL {
+    if ((*root)->left == NULL && (*root)->right == NULL) {
 	if ((*root)->data == data){
 	free (*root);
 	*root = NULL;
@@ -105,9 +109,10 @@ void deletion() {
      }
 
      if (keyNode != NULL) {
-	Node* deepestgNode = getDeepestRightmostNode(*root);
+	Node* deepestNode = getDeepestRightmostNode(*root);
 	keyNode->data = deepestNode->data;
 	deleteDeepestRightmostNode(*root, deepestNode);
      } else {
 	     printf("Synthax error\n");
+}
 }
