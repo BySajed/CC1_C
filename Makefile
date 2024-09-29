@@ -1,5 +1,5 @@
 CC= gcc
-CFLAGS= -O2 -Wall -Wextra -Werror -ansi
+CFLAGS= -O2 -Wall -Wextra -Werror -ggdb -O0 -ansi -std=c11
 CLIBS= -lm
 EXE= executable
 OBJ= obj/
@@ -17,6 +17,12 @@ $(OBJ)main.o : $(SRC)main.c $(FILEH)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)%.o : $(SRC)%.c $(INCL)%.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)insert.o : $(SRC)insert.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)select.o : $(SRC)select.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean :

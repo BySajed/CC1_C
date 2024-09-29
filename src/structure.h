@@ -1,13 +1,12 @@
-// structures.h
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
-typedef struct table{
-    int id;
-    char nom[20];
-    char prenom[20];
-    int age;
-    struct table *next;
-};
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
 
-#endif // STRUCTURES_H
+Node* createNode(int data);
+
+#endif

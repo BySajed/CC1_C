@@ -15,71 +15,70 @@
 #include <string.h>
 #include "main.h"
 #include "structure.h"
+#include "binary_tree.h"
+#include "insert.h"
 
 typedef struct table table;
 struct table *first = NULL;
 char userInput[100];
 void insert();
-void select();
+void selection();
 
-int menu(){
+void menu(){
     printf("Bienvenue dans votre base de donnée !\nQue souhaitez-vous faire ? :\n");
-    return 0;
+
 }
 
 char *getInput(char *input) {
-    fgets(input, sizeof(input), stdin);
+    fgets(input, 255, stdin);
     if (input[strlen(input) - 1] == '\n') {
         input[strlen(input) - 1] = '\0';
     }
     return input;
 }
 
+void handleUserInput(char* userInput) {
+    char *token = strtok(userInput, " ");
+    while (token != NULL) {
+        printf("%s\n", token);
+        token = strtok(NULL, " ");
+    }
+}
+
 int main() {
-    int choice;
+    
+    menu();
 
     //init table
     first = (table *)malloc(sizeof(table));
     if (first == NULL) {
         printf("Memory allocation failed.\n");
-        return 1; // Exit the program
+        return 1;
     }
 
     struct table *current = first;
+    current->next = NULL;
     int id_node = 0;
 
     //auto increment id
     while (current != NULL) {
         current->id = id_node+1;
-        if(current->next != NULL) {
-            current = current->next;
-        }
+	current = current->next;
     }
 
-    menu();
-    getInput(userInput);
+    char input[25];
+    char *condition = "select * from table";
+    char* userInput = getInput(input);
 
-    if(strcmp(userInput, "insert into table values (1)") == 0) {
-        choice = 1;
+    if(!strcmp(userInput, "test 1")) {
+        insertion();
     }
-    else if(strcmp(userInput, "select * from table") == 0) {
-        choice = 2;
+    else if(!strcmp(userInput, condition)) {
+        handleUserInput(userInput);
     }
     else {
         printf("Veuillez entrer une commande valide\n");
-        return 1;
-    }
-
-    switch (choice) {
-        case 1:
-            insert();
-            break;
-        case 2:
-            select();
-            break;
-        default:
-            printf("Veuillez entrer un choix valide\n");
-            break;
+        return -1;
     }
 
     return 0;

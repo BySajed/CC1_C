@@ -5,4 +5,6 @@
 #ifndef CC1_INSERT_H
 #define CC1_INSERT_H
 
-#endif //CC1_INSERT_H
+void insertion();
+
+#endif

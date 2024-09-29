@@ -2,8 +2,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-int menu();
+void menu();
 char *getInput(char* input);
+void handleUserInput(char *userInput);
 int main();
 
 #endif

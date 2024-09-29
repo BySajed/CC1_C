@@ -7,7 +7,7 @@
 
 extern struct table *first;
 
-void select() {
+void selection() {
     struct table *current = first;
 
     while (current != NULL) {
