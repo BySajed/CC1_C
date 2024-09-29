@@ -25,6 +25,15 @@ $(OBJ)insert.o : $(SRC)insert.c
 $(OBJ)select.o : $(SRC)select.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+$(OBJ)binary_tree.o : $(SRC)binary_tree.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)delete.o : $(SRC)delete.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)update.o : $(SRC)update.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 clean :
 	rm -rf $(OBJ)*.o
 	rm -rf $(EXE)
