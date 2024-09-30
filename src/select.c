@@ -5,9 +5,9 @@
 #include "main.h"
 #include "structure.h"
 
-extern struct table *first;
+//extern struct table *first;
 
-void selection() {
+Node* selection(Node* root, int data) {
 /*    struct table *current = first;
 
     while (current != NULL) {
@@ -19,5 +19,29 @@ void selection() {
 
         current = current->next;
     }*/
-    printf("la fonction de selection est en cours de developpement");
+    if (root == NULL) {
+	return NULL;
+    }
+
+    Node* temp;
+    Node* queue[100];
+    int front = -1, rear = -1;
+    queue[++rear] = root;
+
+    while (front != rear) {
+	    temp = queue[++front];
+
+	    if (temp->data == data) {
+		    return temp;
+	    }
+
+	    if (temp ->left != NULL) {
+		    queue[++rear] = temp->left;
+	    }
+
+	    if (temp->right != NULL) {
+		    queue[++rear] = temp->right;
+	    }
+    }
+    return NULL;
 }

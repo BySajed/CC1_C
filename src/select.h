@@ -5,6 +5,7 @@
 #ifndef CC1_SELECTION_H
 #define CC1_SELECTION_H
 
-void selection();
+Node* selection(Node* root, int data);
+ 
 
 #endif 
