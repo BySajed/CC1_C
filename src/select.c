@@ -1,33 +1,37 @@
-//
-// Created by sajed on 25/09/2024.
-//
+/*
+ * Created by sajed on 25/09/2024.
+ *
+ * Function: Selection
+ *
+ * Perform a BFS (Breadth-First Search) on a binary tree to find a node containing
+ * the specified data. The BFS traversal explores the tree level by level using a queue.
+ *
+ * Parameters:
+ *  - root: A pointer to the root node of the binary tree.
+ *  - data: The integer value to search for within the tree.
+ *
+ *  Returns:
+ *  - A pointer to the node containing the specified data if found.
+ *  - NULL if the data is not found in the tree of the tree is empty.
+*/
 #include <stdio.h>
 #include "main.h"
 #include "structure.h"
 
-//extern struct table *first;
-
 Node* selection(Node* root, int data) {
-/*    struct table *current = first;
 
-    while (current != NULL) {
-        printf("id: %d\n", current->id);
-        printf("nom: %s\n", current->nom);
-        printf("prenom: %s\n", current->prenom);
-        printf("age: %d\n", current->age);
-        printf("\n");
-
-        current = current->next;
-    }*/
+// If the tree is empty, return NULL
     if (root == NULL) {
 	return NULL;
     }
 
+// Initialize a queue to store nodes for level-order traversal
     Node* temp;
     Node* queue[100];
     int front = -1, rear = -1;
     queue[++rear] = root;
 
+// Perform BFS until the queue is empty of the node is found
     while (front != rear) {
 	    temp = queue[++front];
 
@@ -43,5 +47,7 @@ Node* selection(Node* root, int data) {
 		    queue[++rear] = temp->right;
 	    }
     }
+
+// If the node wasn't found, return NULL
     return NULL;
 }
