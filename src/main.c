@@ -57,6 +57,7 @@ void inorderTraversal(Node* root){
 
 int main() {
     
+    Node* root = NULL;
     menu();
 
     //init table
