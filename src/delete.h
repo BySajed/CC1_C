@@ -5,6 +5,8 @@
 #ifndef CC1_DELETE_H
 #define CC1_DELETE_H
 
-void deletion();
+Node* getDeepestRightmostNode(Node* root);
+void deleteDeepestRightmostNode(Node* root, Node* dNode);
+void deletion(Node** root, int data);
 
 #endif //CC1_DELETE_H
