@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "main.h"
 #include "structure.h"
@@ -28,35 +29,128 @@ char userInput[100];
 void insert();
 Node* selection();
 
-void menu(){
-    printf("Bienvenue dans votre base de donnée !\nQue souhaitez-vous faire ? :\n");
-
-}
-
 char *getInput(char *input) {
-    fgets(input, 255, stdin);
+    if (fgets(input, 255, stdin) == NULL) {
+        printf("Error reading input.\n");
+        return NULL;
+    }
     if (input[strlen(input) - 1] == '\n') {
         input[strlen(input) - 1] = '\0';
     }
+
+    // Convert the input to uppercase
+    for(int i = 0; input[i]; i++){
+        input[i] = toupper(input[i]);
+    }
+
     return input;
 }
 
-void handleUserInput(char* userInput) {
+void handleUserInput(char* userInput, Node** root) {
     char *token = strtok(userInput, " ");
-    while (token != NULL) {
-        printf("%s\n", token);
-        token = strtok(NULL, " ");
+    char *command = token;
+
+    // Check if it's an INSERT command
+    if (strcmp(command, "INSERT") == 0) {
+        handleInsertCommand(userInput, root);
+    }
+    // Check if it's a DELETE command
+    else if (strcmp(command, "DELETE") == 0) {
+        handleDeleteCommand(userInput, root);
+    }
+    // Check if it's a SELECT command
+    else if (strcmp(command, "SELECT") == 0) {
+        handleSelectCommand(userInput, *root);
+    }
+    // Exit loop on a quit command
+    else if (strcmp(command, "QUIT") == 0) {
+        exit(0);
+    }
+    else {
+        printf("Invalid command.\n");
     }
 }
 
-void inorderTraversal(Node* root){
-    if (root == NULL) {
-	return;
+void handleInsertCommand(char* command, Node** root) {
+    char table[256];
+    int value;
+    sscanf(command, "INSERT INTO %s VALUES (%d)", table, &value);
+    // Check if the table name is correct
+    if (strcmp(table, "TABLE") != 0) {
+        printf("Invalid table name.\n");
+        return;
     }
-    
-    inorderTraversal(root->left);
-    printf("%d", root->data);
-    inorderTraversal(root->right);
+    insertion(root, value);
+    printf("Inserted %d into the table %s.\n", value, table);
+}
+
+void deleteAll(Node** root) {
+    if (*root == NULL) return;
+
+    // delete both subtrees
+    deleteAll(&(*root)->left);
+    deleteAll(&(*root)->right);
+
+    // then delete the node
+    printf("Deleting node: %d\n", (*root)->data);
+    free(*root);
+    *root = NULL;
+}
+
+void handleDeleteCommand(char* command, Node** root) {
+    char table[256];
+    int value;
+    int numArgs = sscanf(command, "DELETE FROM %s WHERE VALUE=%d", table, &value);
+
+    // Check if the table name is correct
+    if (strcmp(table, "TABLE") != 0) {
+        printf("Invalid table name.\n");
+        return;
+    }
+
+    if (numArgs == 2) {
+        // If a condition is provided, delete the specific value
+        deletion(root, value);
+        printf("Deleted value %d from the table %s.\n", value, table);
+    } else {
+        // If no condition is provided, delete all values
+        deleteAll(root);
+        printf("Deleted all values from the table %s.\n", table);
+    }
+}
+
+void selectAll(Node* root) {
+    if (root == NULL) return;
+
+    // select both subtrees
+    selectAll(root->left);
+    printf("Selected node: %d\n", root->data);
+    selectAll(root->right);
+}
+
+void handleSelectCommand(char* command, Node* root) {
+    char table[256];
+    int value;
+    int numArgs = sscanf(command, "SELECT * FROM %s WHERE VALUE=%d", table, &value);
+
+    // Check if the table name is correct
+    if (strcmp(table, "TABLE") != 0) {
+        printf("Invalid table name.\n");
+        return;
+    }
+
+    if (numArgs == 2) {
+        // If a condition is provided, select the specific value
+        Node* result = selection(root, value);
+        if (result != NULL) {
+            printf("Found value %d in the table %s.\n", value, table);
+        } else {
+            printf("Value %d not found in the table %s.\n", value, table);
+        }
+    } else {
+        // If no condition is provided, select all values
+        selectAll(root);
+    }
 }
 
 int main() {
@@ -65,34 +159,23 @@ int main() {
 
     while (1) {
         printf("Enter SQL command: ");
-        fgets(command, sizeof(command), stdin);
+        if (getInput(command) == NULL) {
+            continue;
+        }
 
         // Check if it's an INSERT command
         if (strncmp(command, "INSERT", 6) == 0) {
-            int value;
-            sscanf(command, "INSERT INTO table VALUES (%d)", &value);
-            insertion(&root, value);
-            printf("Inserted %d into the tree.\n", value);
+            handleInsertCommand(command, &root);
         }
-            // Check if it's a DELETE command
+        // Check if it's a DELETE command
         else if (strncmp(command, "DELETE", 6) == 0) {
-            int value;
-            sscanf(command, "DELETE FROM table WHERE value=%d", &value);
-            deletion(&root, value);
-            printf("Deleted %d from the tree.\n", value);
+            handleDeleteCommand(command, &root);
         }
-            // Check if it's a SELECT command
+        // Check if it's a SELECT command
         else if (strncmp(command, "SELECT", 6) == 0) {
-            int value;
-            sscanf(command, "SELECT * FROM table WHERE value=%d", &value);
-            Node* result = selection(root, value);
-            if (result != NULL) {
-                printf("Found %d in the tree.\n", value);
-            } else {
-                printf("Value %d not found.\n", value);
-            }
+            handleSelectCommand(command, root);
         }
-            // Exit loop on a quit command
+        // Exit loop on a quit command
         else if (strncmp(command, "QUIT", 4) == 0) {
             break;
         }

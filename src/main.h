@@ -3,10 +3,12 @@
 #define MAIN_H
 #include "structure.h"
 
-void menu();
-char *getInput(char* input);
-void handleUserInput(char *userInput);
-void inorderTraversal(Node* root);
+char *getInput(char *input);
+void handleInsertCommand(char* command, Node** root);
+void handleDeleteCommand(char* command, Node** root);
+void handleSelectCommand(char* command, Node* root);
+void deleteAll(Node** root);
+void selectAll(Node* root);
 int main();
 
 
