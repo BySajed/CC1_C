@@ -31,7 +31,7 @@ char binary_tree(Node *root, int data){
     } else {
         printf("Erreur de synthaxe\n");
     }
-    handleUserInput(input);
+    //*getInput(char *input);
     
 
     return *input;

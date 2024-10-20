@@ -109,7 +109,7 @@ void handleInsertCommand(char* command, Node** root) {
     sscanf(command, "INSERT INTO %s VALUES (%[^)])", table, values);
 
     // Check if the table name is correct
-    if (strcmp(table, "TABLE") != 0) {
+    if (strcmp(table, tableName) != 0) {
         printf("Invalid table name 1.\n");
         return;
     }
@@ -143,7 +143,7 @@ void handleDeleteCommand(char* command, Node** root) {
     int numArgs = sscanf(command, "DELETE FROM %s WHERE VALUE=%d", table, &value);
 
     // Check if the table name is correct
-    if (strcmp(table, "TABLE") != 0) {
+    if (strcmp(table, tableName) != 0) {
         printf("Invalid table name 2.\n");
         return;
     }
