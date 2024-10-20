@@ -37,6 +37,9 @@ $(OBJ)update.o : $(SRC)update.c
 $(OBJ)structure.o : $(SRC)structure.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+$(OBJ)table.o : $(SRC)table.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 
 clean :
 	rm -rf $(OBJ)*.o

@@ -28,6 +28,7 @@
 #include "select.h"
 #include "delete.h"
 #include "update.h"
+#include "table.h"
 
 typedef struct table table;
 struct table *first = NULL;
@@ -68,12 +69,37 @@ void handleUserInput(char* userInput, Node** root) {
     else if (strcmp(command, "SELECT") == 0) {
         handleSelectCommand(userInput, *root);
     }
+    // Check if it's a CREATE TABLE command
+    else if (strcmp(command, "CREATE TABLE") == 0) {
+        handleCreateTableCommand(userInput);
+    }
+    // Check if it's a SHOW TABLES command
+    else if (strcmp(command, "SHOW TABLES") == 0) {
+        showTables();
+    }
     // Exit loop on a quit command
     else if (strcmp(command, "QUIT") == 0) {
         exit(0);
     }
     else {
         printf("Invalid command.\n");
+    }
+}
+
+void handleCreateTableCommand(char* command) {
+    char tableName[256];
+    sscanf(command, "CREATE TABLE %s", tableName);
+    createTable(tableName);
+}
+
+void handleSelectTableCommand(char* command) {
+    sscanf(command, "SELECT TABLE %s", tableName);
+    Table* table = getTable(tableName);
+    if (table != NULL) {
+        printf("Table %s selected.\n", tableName);
+        // Vous pouvez ajouter des opérations supplémentaires sur la table sélectionnée ici
+    } else {
+        printf("Table %s not found.\n", tableName);
     }
 }
 
@@ -84,7 +110,7 @@ void handleInsertCommand(char* command, Node** root) {
 
     // Check if the table name is correct
     if (strcmp(table, "TABLE") != 0) {
-        printf("Invalid table name.\n");
+        printf("Invalid table name 1.\n");
         return;
     }
 
@@ -118,7 +144,7 @@ void handleDeleteCommand(char* command, Node** root) {
 
     // Check if the table name is correct
     if (strcmp(table, "TABLE") != 0) {
-        printf("Invalid table name.\n");
+        printf("Invalid table name 2.\n");
         return;
     }
 
@@ -148,8 +174,8 @@ void handleSelectCommand(char* command, Node* root) {
     int numArgs = sscanf(command, "SELECT * FROM %s WHERE VALUE=%d", table, &value);
 
     // Check if the table name is correct
-    if (strcmp(table, "TABLE") != 0) {
-        printf("Invalid table name.\n");
+    if (strcmp(table, tableName) != 0) {
+        printf("Invalid table name 3.\n");
         return;
     }
 
@@ -188,6 +214,14 @@ int main() {
         // Check if it's a SELECT command
         else if (strncmp(command, "SELECT", 6) == 0) {
             handleSelectCommand(command, root);
+        }
+        // Check if it's a CREATE TABLE command
+        else if (strncmp(command, "CREATE TABLE", 12) == 0) {
+            handleCreateTableCommand(userInput);
+        }
+            // Check if it's a SHOW TABLES command
+        else if (strcmp(command, "SHOW TABLES") == 0) {
+            showTables();
         }
         // Exit loop on a quit command
         else if (strncmp(command, "QUIT", 4) == 0) {
