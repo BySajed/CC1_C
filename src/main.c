@@ -4,6 +4,12 @@
  * Objectif: Faire une base de donnée en incluant le principe d'arbre binaire
  * Permettre à l'utilisateur de faire des insert, des select et des delete
  *
+ * Liste des commandes gérés:
+ * - INSERT
+ * - SELECT
+ * - DELETE
+ * - QUIT (pour quitter le programme)
+ *
  * fait par BEN YOUSSEF Sajed 3SI2
  *
  * Début le 25/09/2024
@@ -73,15 +79,23 @@ void handleUserInput(char* userInput, Node** root) {
 
 void handleInsertCommand(char* command, Node** root) {
     char table[256];
-    int value;
-    sscanf(command, "INSERT INTO %s VALUES (%d)", table, &value);
+    char values[256];
+    sscanf(command, "INSERT INTO %s VALUES (%[^)])", table, values);
+
     // Check if the table name is correct
     if (strcmp(table, "TABLE") != 0) {
         printf("Invalid table name.\n");
         return;
     }
-    insertion(root, value);
-    printf("Inserted %d into the table %s.\n", value, table);
+
+    // Tokenize the values and insert each one
+    char* token = strtok(values, ",");
+    while (token != NULL) {
+        int value = atoi(token);
+        insertion(root, value);
+        printf("Inserted %d into the table %s.\n", value, table);
+        token = strtok(NULL, ",");
+    }
 }
 
 void deleteAll(Node** root) {
