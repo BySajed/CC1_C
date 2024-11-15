@@ -6,7 +6,7 @@
 
 Table** tables = NULL;
 int numTables = 0;
-int tableCapacity = 5;
+int tableCapacity = 0;
 char *tableName = NULL; // Utilisation de char * pour un nom de table dynamique
 
 void resizeTableArray() {
