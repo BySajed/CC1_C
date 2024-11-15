@@ -22,6 +22,10 @@ void createTable(const char *table_name) {
 
     // Allocation dynamique pour le nom de la table
     tables[numTables]->name = (char *)malloc(strlen(table_name) + 1);
+    if (tables[numTables]->name == NULL) {
+        printf("Error allocating memory for table name.\n");
+        return;
+    }
     strcpy(tables[numTables]->name, table_name);
 
     tables[numTables]->tree = NULL;
@@ -60,8 +64,10 @@ void showTables() {
         printf("No tables available.\n");
         return;
     }
-    printf("Tables:\n");
+    printf("%d Tables:\n", numTables);
     for (int i = 0; i < numTables; i++) {
-        printf("- %s\n", tables[i]->name);
+        if (tables[i] != NULL && tables[i]->name != NULL) {
+            printf("- %s\n", tables[i]->name);
+        }
     }
 }

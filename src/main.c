@@ -217,7 +217,7 @@ int main() {
         }
         // Check if it's a CREATE TABLE command
         else if (strncmp(command, "CREATE TABLE", 12) == 0) {
-            handleCreateTableCommand(userInput);
+            handleCreateTableCommand(command);
         }
             // Check if it's a SHOW TABLES command
         else if (strcmp(command, "SHOW TABLES") == 0) {
