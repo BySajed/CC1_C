@@ -90,6 +90,7 @@ void handleCreateTableCommand(char* command) {
     char *tableName = (char *)malloc(256);
     sscanf(command, "CREATE TABLE %s", tableName);
     createTable(tableName);
+    free(tableName);
 }
 
 void handleSelectTableCommand(char* command) {
@@ -107,12 +108,10 @@ void handleInsertCommand(char* command, Node** root) {
     char values[256];
     sscanf(command, "INSERT INTO %s VALUES (%[^)])", table, values);
 
-    // Check if the table name is correct
-    //printf("table: %s\nvalues: %s\n tableName: %s\n", table, values, tableName);
-    if (strcmp(table, tables[numTables]->name) != 0) {
-        printf("Table name: %s\n", tableName);
-        printf("%s\n", tables[numTables]->name);
-        printf("Invalid table name 1.\n");
+    // Recherche de la table par nom
+    Table* currentTable = getTable(table);
+    if (currentTable == NULL) {
+        printf("Invalid table name.\n");
         return;
     }
 
@@ -125,6 +124,7 @@ void handleInsertCommand(char* command, Node** root) {
         token = strtok(NULL, ",");
     }
 }
+
 
 void deleteAll(Node** root) {
     if (*root == NULL) return;

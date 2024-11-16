@@ -11,7 +11,13 @@ char *tableName = NULL; // Utilisation de char * pour un nom de table dynamique
 
 void resizeTableArray() {
     tableCapacity = (tableCapacity == 0) ? 1 : tableCapacity * 2;
-    tables = (Table**)realloc(tables, tableCapacity * sizeof(Table*));
+    //tables = (Table**)realloc(tables, tableCapacity * sizeof(Table*));
+    Table** temp = (Table**)realloc(tables, tableCapacity * sizeof(Table*));
+    if (temp == NULL) {
+        printf("Error allocating memory for tables.\n");
+        return;
+    }
+    tables = temp;
 }
 
 void createTable(const char *table_name) {
@@ -19,6 +25,10 @@ void createTable(const char *table_name) {
         resizeTableArray();
     }
     tables[numTables] = (Table *)malloc(sizeof(Table));
+    if (tables[numTables] == NULL) {
+        printf("Error allocating memory for table.\n");
+        return;
+    }
 
     // Allocation dynamique pour le nom de la table
     tables[numTables]->name = (char *)malloc(strlen(table_name) + 1);
@@ -27,7 +37,9 @@ void createTable(const char *table_name) {
         return;
     }
     printf("Table name: %s\n", table_name);
-    strcpy_s(tables[numTables]->name, strlen(table_name) + 1, table_name);
+    strcpy(tables[numTables]->name, table_name);
+    printf("Table name: %s\n", table_name);
+    printf("%s\n", tables[numTables]->name);
 
     tables[numTables]->tree = NULL;
     numTables++;
