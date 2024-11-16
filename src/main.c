@@ -87,7 +87,7 @@ void handleUserInput(char* userInput, Node** root) {
 }
 
 void handleCreateTableCommand(char* command) {
-    char tableName[256];
+    char *tableName = (char *)malloc(256);
     sscanf(command, "CREATE TABLE %s", tableName);
     createTable(tableName);
 }
@@ -97,7 +97,6 @@ void handleSelectTableCommand(char* command) {
     Table* table = getTable(tableName);
     if (table != NULL) {
         printf("Table %s selected.\n", tableName);
-        // Vous pouvez ajouter des opérations supplémentaires sur la table sélectionnée ici
     } else {
         printf("Table %s not found.\n", tableName);
     }
@@ -109,7 +108,10 @@ void handleInsertCommand(char* command, Node** root) {
     sscanf(command, "INSERT INTO %s VALUES (%[^)])", table, values);
 
     // Check if the table name is correct
-    if (strcmp(table, tableName) != 0) {
+    //printf("table: %s\nvalues: %s\n tableName: %s\n", table, values, tableName);
+    if (strcmp(table, tables[numTables]->name) != 0) {
+        printf("Table name: %s\n", tableName);
+        printf("%s\n", tables[numTables]->name);
         printf("Invalid table name 1.\n");
         return;
     }

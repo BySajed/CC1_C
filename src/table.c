@@ -26,7 +26,8 @@ void createTable(const char *table_name) {
         printf("Error allocating memory for table name.\n");
         return;
     }
-    strcpy(tables[numTables]->name, table_name);
+    printf("Table name: %s\n", table_name);
+    strcpy_s(tables[numTables]->name, strlen(table_name) + 1, table_name);
 
     tables[numTables]->tree = NULL;
     numTables++;
