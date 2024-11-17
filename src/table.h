@@ -8,7 +8,7 @@
 extern Table** tables;
 extern int numTables;
 extern int tableCapacity;
-extern char tableName[50];
+extern char *tableName;
 
 void resizeTableArray();
 void createTable(const char* tableName);

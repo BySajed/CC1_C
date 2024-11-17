@@ -8,7 +8,7 @@ typedef struct Node {
 } Node;
 
 typedef struct Table {
-    char name[50];
+    char *name;
     Node* tree;
 } Table;
 

@@ -53,39 +53,6 @@ char *getInput(char *input) {
     return input;
 }
 
-void handleUserInput(char* userInput, Node** root) {
-    char *token = strtok(userInput, " ");
-    char *command = token;
-
-    // Check if it's an INSERT command
-    if (strcmp(command, "INSERT") == 0) {
-        handleInsertCommand(userInput, root);
-    }
-    // Check if it's a DELETE command
-    else if (strcmp(command, "DELETE") == 0) {
-        handleDeleteCommand(userInput, root);
-    }
-    // Check if it's a SELECT command
-    else if (strcmp(command, "SELECT") == 0) {
-        handleSelectCommand(userInput, *root);
-    }
-    // Check if it's a CREATE TABLE command
-    else if (strcmp(command, "CREATE TABLE") == 0) {
-        handleCreateTableCommand(userInput);
-    }
-    // Check if it's a SHOW TABLES command
-    else if (strcmp(command, "SHOW TABLES") == 0) {
-        showTables();
-    }
-    // Exit loop on a quit command
-    else if (strcmp(command, "QUIT") == 0) {
-        exit(0);
-    }
-    else {
-        printf("Invalid command.\n");
-    }
-}
-
 void handleCreateTableCommand(char* command) {
     char tableName[256];
     sscanf(command, "CREATE TABLE %s", tableName);
@@ -97,20 +64,27 @@ void handleSelectTableCommand(char* command) {
     Table* table = getTable(tableName);
     if (table != NULL) {
         printf("Table %s selected.\n", tableName);
-        // Vous pouvez ajouter des opérations supplémentaires sur la table sélectionnée ici
     } else {
         printf("Table %s not found.\n", tableName);
     }
 }
 
-void handleInsertCommand(char* command, Node** root) {
+void handleDropTableCommand(char* command) {
+    char tableName[256];
+    sscanf(command, "DROP TABLE %s", tableName);
+    deleteTable(tableName);
+}
+
+
+void handleInsertCommand(char* command) {
     char table[256];
     char values[256];
     sscanf(command, "INSERT INTO %s VALUES (%[^)])", table, values);
 
-    // Check if the table name is correct
-    if (strcmp(table, "TABLE") != 0) {
-        printf("Invalid table name 1.\n");
+    // Recherche de la table par nom
+    Table* currentTable = getTable(table);
+    if (currentTable == NULL) {
+        printf("Invalid table name.\n");
         return;
     }
 
@@ -118,11 +92,12 @@ void handleInsertCommand(char* command, Node** root) {
     char* token = strtok(values, ",");
     while (token != NULL) {
         int value = atoi(token);
-        insertion(root, value);
+        insertion(&currentTable->tree, value);
         printf("Inserted %d into the table %s.\n", value, table);
         token = strtok(NULL, ",");
     }
 }
+
 
 void deleteAll(Node** root) {
     if (*root == NULL) return;
@@ -137,27 +112,29 @@ void deleteAll(Node** root) {
     *root = NULL;
 }
 
-void handleDeleteCommand(char* command, Node** root) {
+void handleDeleteCommand(char* command) {
     char table[256];
     int value;
     int numArgs = sscanf(command, "DELETE FROM %s WHERE VALUE=%d", table, &value);
 
-    // Check if the table name is correct
-    if (strcmp(table, "TABLE") != 0) {
-        printf("Invalid table name 2.\n");
+    // Recherche de la table par nom
+    Table* currentTable = getTable(table);
+    if (currentTable == NULL) {
+        printf("Invalid table name.\n");
         return;
     }
 
     if (numArgs == 2) {
-        // If a condition is provided, delete the specific value
-        deletion(root, value);
+        // Si une condition est fournie, supprimer la valeur spécifique
+        deletion(&currentTable->tree, value);
         printf("Deleted value %d from the table %s.\n", value, table);
     } else {
-        // If no condition is provided, delete all values
-        deleteAll(root);
+        // Si aucune condition n'est fournie, supprimer tous les noeuds
+        deleteAll(&currentTable->tree);
         printf("Deleted all values from the table %s.\n", table);
     }
 }
+
 
 void selectAll(Node* root) {
     if (root == NULL) return;
@@ -168,20 +145,21 @@ void selectAll(Node* root) {
     selectAll(root->right);
 }
 
-void handleSelectCommand(char* command, Node* root) {
+void handleSelectCommand(char* command) {
     char table[256];
     int value;
     int numArgs = sscanf(command, "SELECT * FROM %s WHERE VALUE=%d", table, &value);
 
-    // Check if the table name is correct
-    if (strcmp(table, "TABLE") != 0) {
-        printf("Invalid table name 3.\n");
+    // Recherche de la table par nom
+    Table* currentTable = getTable(table);
+    if (currentTable == NULL) {
+        printf("Invalid table name.\n");
         return;
     }
 
     if (numArgs == 2) {
         // If a condition is provided, select the specific value
-        Node* result = selection(root, value);
+        Node* result = selection(currentTable->tree, value);
         if (result != NULL) {
             printf("Found value %d in the table %s.\n", value, table);
         } else {
@@ -189,13 +167,13 @@ void handleSelectCommand(char* command, Node* root) {
         }
     } else {
         // If no condition is provided, select all values
-        selectAll(root);
+        selectAll(currentTable->tree);
     }
 }
 
 int main() {
     char command[256];
-    Node* root = NULL;
+    //Node* root = NULL;
 
     while (1) {
         printf("Enter SQL command: ");
@@ -205,23 +183,27 @@ int main() {
 
         // Check if it's an INSERT command
         if (strncmp(command, "INSERT", 6) == 0) {
-            handleInsertCommand(command, &root);
+            handleInsertCommand(command);
         }
         // Check if it's a DELETE command
         else if (strncmp(command, "DELETE", 6) == 0) {
-            handleDeleteCommand(command, &root);
+            handleDeleteCommand(command);
         }
         // Check if it's a SELECT command
         else if (strncmp(command, "SELECT", 6) == 0) {
-            handleSelectCommand(command, root);
+            handleSelectCommand(command);
         }
         // Check if it's a CREATE TABLE command
         else if (strncmp(command, "CREATE TABLE", 12) == 0) {
-            handleCreateTableCommand(userInput);
+            handleCreateTableCommand(command);
         }
             // Check if it's a SHOW TABLES command
         else if (strcmp(command, "SHOW TABLES") == 0) {
             showTables();
+        }
+        // Check if it's a DELETE TABLE command
+        else if (strncmp(command, "DROP TABLE", 10) == 0) {
+            handleDropTableCommand(command);
         }
         // Exit loop on a quit command
         else if (strncmp(command, "QUIT", 4) == 0) {
@@ -231,6 +213,14 @@ int main() {
             printf("Invalid command.\n");
         }
     }
+
+    // Free all tables
+    for (int i = 0; i < numTables; i++) {
+        deleteAll(&tables[i]->tree); // Libérer l'arbre de la table
+        free(tables[i]->name); // Libérer le nom de la table
+        free(tables[i]); // Libérer la structure Table elle-même
+    }
+    free(tables); // Libérer le tableau de pointeurs de tables
 
     return 0;
 }
