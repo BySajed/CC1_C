@@ -5,6 +5,10 @@
  * Permettre à l'utilisateur de faire des insert, des select et des delete
  *
  * Liste des commandes gérés:
+ * - CREATE TABLE
+ * - DROP TABLE
+ * - SHOW TABLES
+ * - DROP TABLE
  * - INSERT
  * - SELECT
  * - DELETE
