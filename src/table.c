@@ -3,6 +3,7 @@
 #include <string.h>
 #include "structure.h"
 #include "table.h"
+#include "main.h"
 
 Table** tables = NULL;
 int numTables = 0;
@@ -56,9 +57,12 @@ Table* getTable(const char* tableName) {
 void deleteTable(const char* tableName) {
     for (int i = 0; i < numTables; i++) {
         if (strcmp(tables[i]->name, tableName) == 0) {
-            free(tables[i]->tree); // Assuming tree is dynamically allocated
-            free(tables[i]->name); // Libération de l'allocation dynamique pour le nom
+            // Libération de l'arbre de la table (si elle est allouée dynamiquement)
+            deleteAll(&tables[i]->tree);
+            free(tables[i]->name);
             free(tables[i]);
+
+            // Déplacer les autres tables pour combler le vide
             for (int j = i; j < numTables - 1; j++) {
                 tables[j] = tables[j + 1];
             }
@@ -69,6 +73,7 @@ void deleteTable(const char* tableName) {
     }
     printf("Table %s not found.\n", tableName);
 }
+
 
 void showTables() {
     if (numTables == 0) {

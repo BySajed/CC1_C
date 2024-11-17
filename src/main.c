@@ -69,6 +69,13 @@ void handleSelectTableCommand(char* command) {
     }
 }
 
+void handleDropTableCommand(char* command) {
+    char tableName[256];
+    sscanf(command, "DROP TABLE %s", tableName);
+    deleteTable(tableName);
+}
+
+
 void handleInsertCommand(char* command) {
     char table[256];
     char values[256];
@@ -194,6 +201,10 @@ int main() {
         else if (strcmp(command, "SHOW TABLES") == 0) {
             showTables();
         }
+        // Check if it's a DELETE TABLE command
+        else if (strncmp(command, "DROP TABLE", 10) == 0) {
+            handleDropTableCommand(command);
+        }
         // Exit loop on a quit command
         else if (strncmp(command, "QUIT", 4) == 0) {
             break;
@@ -202,6 +213,14 @@ int main() {
             printf("Invalid command.\n");
         }
     }
+
+    // Free all tables
+    for (int i = 0; i < numTables; i++) {
+        deleteAll(&tables[i]->tree); // Libérer l'arbre de la table
+        free(tables[i]->name); // Libérer le nom de la table
+        free(tables[i]); // Libérer la structure Table elle-même
+    }
+    free(tables); // Libérer le tableau de pointeurs de tables
 
     return 0;
 }

@@ -74,101 +74,83 @@ Node* getDeepestRightmostNode(Node* root){
     return temp;
 }
 
-void deleteDeepestRightmostNode(Node* root, Node* dNode){
+void deleteDeepestRightmostNode(Node* root, Node* dNode) {
     Node* temp;
     Node* queue[100];
     int64_t front = -1, rear = -1;
 
-    //Start BFS from the root node
     queue[++rear] = root;
 
-    // Perform BFS to find and delete the deepest rightmost node
     while (front != rear) {
-	temp = queue[++front];
+        temp = queue[++front];
 
-	// Check if the current node is the node to be deleted
-	if (temp == dNode) {
-	    temp = NULL;
-	    free(dNode);
-	    return;
-	}else{
-	    queue[++rear] = temp->right;
-	}
-    }
+        if (temp == dNode) {
+            // Supprime le nœud trouvé
+            free(dNode);
+            return;
+        }
 
-    // If the right child exists, check if it's the node to delete
-    if (temp->right != NULL) {
-    	if (temp->right == dNode) {
-	    temp->right = NULL;
-	    free(dNode);
-	    return;
-	}else{
-	    queue[++rear] = temp->right;
-	}
-    }
+        if (temp->right) {
+            if (temp->right == dNode) {
+                free(temp->right);
+                temp->right = NULL;
+                return;
+            } else {
+                queue[++rear] = temp->right;
+            }
+        }
 
-    // Same thing with the left child
-    if (temp->left != NULL) {
-	if (temp->left == dNode) {
-	    temp->left = NULL;
-	    free(dNode);
-	    return;
-	}else{
-	    queue[++rear] = temp->left;
-	}
+        if (temp->left) {
+            if (temp->left == dNode) {
+                free(temp->left);
+                temp->left = NULL;
+                return;
+            } else {
+                queue[++rear] = temp->left;
+            }
+        }
     }
 }
 
-void deletion(Node** root, int data) {
 
-    // Handle the case where the tree is empty
+void deletion(Node** root, int data) {
     if (*root == NULL) {
-	printf("Database is empty");
-	return;
+        printf("Database is empty\n");
+        return;
     }
 
-    // Handle the case where the tree has only one node
     if ((*root)->left == NULL && (*root)->right == NULL) {
-	if ((*root)->data == data){
-	free (*root);
-	*root = NULL;
-	return;
-	} else {
-	printf("Synthax error \n");
-	return;
-	}
-     }
+        if ((*root)->data == data) {
+            free(*root);
+            *root = NULL;
+        } else {
+            printf("Syntax error\n");
+        }
+        return;
+    }
 
-     // Perform BFS to find the node with the specified data and track the deepest node
-     Node* temp;
-     Node* queue[100];
-     int front = -1, rear = -1;
-     queue[++rear] = *root;
-     Node* keyNode = NULL;
+    Node* temp;
+    Node* queue[100];
+    int front = -1, rear = -1;
+    queue[++rear] = *root;
+    Node* keyNode = NULL;
 
-     // Perform BFS to find the target node
-     while (front != rear) {
-	temp = queue[++front];
+    while (front != rear) {
+        temp = queue[++front];
 
-	if (temp->data == data) {
-	    keyNode = temp;
-	}
+        if (temp->data == data) {
+            keyNode = temp;
+        }
 
-	if (temp->left != NULL) {
-	    queue[++rear] = temp->left;
-	}
+        if (temp->left) queue[++rear] = temp->left;
+        if (temp->right) queue[++rear] = temp->right;
+    }
 
-	if (temp->right != NULL) {
-	    queue[++rear] = temp->right;
-	}
-     }
-
-     // If the target node is found, replace it with the deepest node
-     if (keyNode != NULL) {
-	Node* deepestNode = getDeepestRightmostNode(*root);
-	keyNode->data = deepestNode->data;
-	deleteDeepestRightmostNode(*root, deepestNode);
-     } else {
-        printf("Synthax error\n");
-     }
+    if (keyNode != NULL) {
+        Node* deepestNode = getDeepestRightmostNode(*root);
+        keyNode->data = deepestNode->data;
+        deleteDeepestRightmostNode(*root, deepestNode);
+    } else {
+        printf("Syntax error\n");
+    }
 }
