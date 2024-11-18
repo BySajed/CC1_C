@@ -1,3 +1,5 @@
+BEN YOUSSEF Sajed 3SI2
+
 This is the list of the supported commands:
   To create table:
   - CREATE TABLE [table name]
